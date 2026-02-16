@@ -44,15 +44,31 @@ app.use('/api/category', categoryRoute)
 app.use('/api/blog', blogRoute)
 app.use('/api/admin', adminRoute)
 
-// Database connection;
-mongoose.connect(process.env.MONGODB_URI, { dbName: "blog_app" })
-    .then(() => console.log("Database connected successfully ✅"))
-    .catch((err) => console.log("Database connection failed ❌", err))
+// Database connection & Server Startup
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            dbName: "blog_app",
+            serverSelectionTimeoutMS: 5000, // Error after 5s instead of 30s
+            socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+        });
+        console.log("Database connected successfully ✅");
 
-// Server
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server is running on http://10.92.212.176:${PORT}`);
-    console.log(`🚀 Locally: http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`🚀 Server is running on http://10.92.212.176:${PORT}`);
+            console.log(`🚀 Locally: http://localhost:${PORT}`);
+        });
+    } catch (err) {
+        console.error("Database connection failed ❌", err);
+        process.exit(1); // Exit if DB connection fails
+    }
+};
+
+connectDB();
+
+// Handle runtime connection errors
+mongoose.connection.on('error', (err) => {
+    console.error('Mongoose runtime error:', err);
 });
 
 app.use((err, req, res, next) => {
