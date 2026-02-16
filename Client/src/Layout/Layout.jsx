@@ -60,8 +60,8 @@ export default function Layout() {
 
       <SidebarInset>
         {/* HEADER */}
-        <header className="sticky top-0 z-10 h-14 border-b bg-background/95 backdrop-blur flex items-center">
-          <div className="flex flex-1 items-center justify-between gap-2 px-4">
+        <header className="sticky top-0 z-10 h-16 border-b bg-background/95 backdrop-blur flex items-center">
+          <div className="flex flex-1 items-center justify-between gap-2 px-2 sm:px-4">
             <SidebarTrigger />
 
             <div className="flex-1 max-w-md mx-auto">
@@ -82,14 +82,14 @@ export default function Layout() {
               {user && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton>
-                      <Avatar className="h-8 w-8 rounded-full">
+                    <Button variant="ghost" className="h-10 w-10 rounded-full p-0 flex items-center justify-center ring-offset-background transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                      <Avatar className="h-10 w-10 rounded-full border border-border/50 shadow-sm">
                         <AvatarImage src={user?.avatar} />
-                        <AvatarFallback>
+                        <AvatarFallback className="bg-primary/5 text-primary font-bold">
                           {user?.name?.charAt(0) || "U"}
                         </AvatarFallback>
                       </Avatar>
-                    </SidebarMenuButton>
+                    </Button>
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent
@@ -139,7 +139,7 @@ export default function Layout() {
         </header>
 
         {/* CONTENT */}
-        <div className="flex flex-1 flex-col gap-4 p-4 relative min-h-[calc(100vh-3.5rem)]">
+        <div className="flex flex-1 flex-col gap-4 p-2 sm:p-4 relative min-h-[calc(100vh-3.5rem)]">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>

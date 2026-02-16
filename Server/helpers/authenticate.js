@@ -13,3 +13,11 @@ export const authenticate = (req, res, next) => {
         next();
     });
 };
+
+export const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next();
+    } else {
+        return next(handleError(403, "Forbidden: Admin access required."));
+    }
+};

@@ -133,8 +133,8 @@ const BlogForm = ({ initialData = null, isEditing = false }) => {
     }
 
     return (
-        <Card className="max-w-4xl mx-auto border-none sm:border sm:shadow-sm bg-background py-3">
-            <CardHeader className="flex flex-row items-center justify-between border-b [.border-b]:pb-3">
+        <Card className="max-w-4xl mx-auto border-none sm:border sm:shadow-sm bg-background py-1 sm:py-3">
+            <CardHeader className="flex flex-row items-center justify-between border-b [.border-b]:pb-3 px-2 sm:px-6">
                 <div className="space-y-1">
                     <CardTitle className="text-2xl font-bold flex items-center gap-2">
                         {isEditing ? "Edit Blog Post" : "Create New Blog Post"}
@@ -148,7 +148,7 @@ const BlogForm = ({ initialData = null, isEditing = false }) => {
                     Back to Blogs
                 </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-2 sm:px-6">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

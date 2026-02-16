@@ -77,13 +77,13 @@ export function LoginForm({
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
-                <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
-                    <CardDescription>
+                <CardHeader className="px-4 sm:px-6">
+                    <CardTitle className="text-xl sm:text-2xl">Login to your account</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
                         Enter your email below to login to your account
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-4 sm:px-6">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
                             <FieldGroup>
@@ -103,6 +103,7 @@ export function LoginForm({
                                                         id="email"
                                                         type="email"
                                                         placeholder="Enter your email address"
+                                                        className="h-10 sm:h-9 text-[16px] sm:text-sm"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -136,6 +137,7 @@ export function LoginForm({
                                                             id="password"
                                                             type={showPassword ? "text" : "password"}
                                                             placeholder="Enter your password"
+                                                            className="h-10 sm:h-9 text-[16px] sm:text-sm"
                                                             {...field}
                                                         />
                                                         <Button

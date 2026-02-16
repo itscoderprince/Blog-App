@@ -24,8 +24,9 @@ import {
 
 import logoLight from "@/assets/images/logo-white.png"
 import logoLetter from "@/assets/images/favicon.png"
-import { RouteBlog, RouteCategories, RouteIndex } from "@/helpers/Route"
+import { RouteBlog, RouteCategories, RouteIndex, RouteManageUsers, RouteManageComments } from "@/helpers/Route"
 import { useCategoryStore } from "@/store/useCategoryStore"
+import { useAuthStore } from "@/store/useAuthStore"
 
 
 // This is sample data.
@@ -53,12 +54,12 @@ const data = {
     },
     {
       name: "Comments",
-      url: "#",
+      url: RouteManageComments,
       icon: MessageSquare,
     },
     {
       name: "Users",
-      url: "#",
+      url: RouteManageUsers,
       icon: Users,
     },
   ],
@@ -81,19 +82,27 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="h-14 border-b flex items-center justify-center">
+      <SidebarHeader className="h-16 border-b flex items-center justify-center">
         {state === "collapsed" ? (
           <div className="flex aspect-square size-7 items-center justify-center rounded-lg">
-            <img src={logoLetter} width={100} alt="logo" />
+            <img src={logoLetter} width={120} alt="logo" />
           </div>
         ) : (
           <div className="flex w-full items-center">
-            <img src={logoLight} width={100} alt="logo" />
+            <img src={logoLight} width={120} alt="logo" />
           </div>
         )}
       </SidebarHeader>
       <SidebarContent>
-        <NavProjects projects={data.projects} categories={dynamicCategories} />
+        <NavProjects
+          projects={data.projects.filter(item => {
+            if (item.name === "Users" || item.name === "Comments") {
+              return useAuthStore.getState().user?.role === 'admin';
+            }
+            return true;
+          })}
+          categories={dynamicCategories}
+        />
       </SidebarContent>
       <SidebarFooter>
       </SidebarFooter>

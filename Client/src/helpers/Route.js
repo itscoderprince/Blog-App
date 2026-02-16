@@ -11,11 +11,16 @@ export const RouteEditCategory = (id) => {
 }
 
 // Blog Routes
-export const RouteBlog = "/blogs";
-export const RouteAddBlog = "/blog/add";
+export const RouteBlog = "/admin/blogs";
+export const RouteCategory = "/category/:categoryName";
+export const RouteAddBlog = "/admin/add-blog";
 export const RouteEditBlog = (id) => {
     return id ? `/blog/edit/${id}` : "/blog/edit/:id"
 }
 export const RouteBlogDetails = (id) => {
     return id ? `/blog/details/${id}` : "/blog/details/:id"
 }
+
+// Admin Management Routes
+export const RouteManageUsers = "/admin/manage-users"
+export const RouteManageComments = "/admin/manage-comments"

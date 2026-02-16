@@ -40,6 +40,7 @@ export const google = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar,
+                role: user.role,
                 fromGoogle: user.fromGoogle
             }, process.env.JWT_SECRET);
 
@@ -72,6 +73,7 @@ export const google = async (req, res, next) => {
                 name: newUser.name,
                 email: newUser.email,
                 avatar: newUser.avatar,
+                role: newUser.role,
                 fromGoogle: newUser.fromGoogle
             }, process.env.JWT_SECRET);
 
@@ -109,7 +111,8 @@ export const Login = async (req, res, next) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            avatar: user.avatar
+            avatar: user.avatar,
+            role: user.role
         }, process.env.JWT_SECRET);
 
         const { password: hashedPassword, ...rest } = user._doc;

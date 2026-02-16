@@ -13,7 +13,7 @@ const CommentItem = ({ item, level = 0, onReply, replyingTo, setReplyingTo, repl
     const isReplyingHere = replyingTo === item._id;
 
     return (
-        <div className={cn("flex flex-col gap-3", isReply && "ml-8 md:ml-12 border-l border-border/40 pl-4")}>
+        <div className={cn("flex flex-col gap-3", isReply && "ml-4 sm:ml-8 md:ml-12 border-l border-border/40 pl-3 sm:pl-4")}>
             <div className="flex gap-3 group">
                 <Avatar className={cn(
                     "shrink-0 border group-hover:ring-2 ring-primary/20 transition-all",
@@ -182,7 +182,7 @@ const CommentSection = ({ blogId, isOpen, setIsOpen, onCountChange }) => {
     };
 
     return (
-        <section className="mt-8 border-t py-8">
+        <section className="mt-6 border-t py-6">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center justify-between w-full group py-2"

@@ -76,13 +76,13 @@ export function SignupForm({
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
-                <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Create your account</CardTitle>
-                    <CardDescription>
+                <CardHeader className="text-center px-4 sm:px-6">
+                    <CardTitle className="text-xl sm:text-2xl">Create your account</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">
                         Enter your email below to create your account
                     </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-4 sm:px-6">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
                             <FieldGroup>
@@ -98,7 +98,7 @@ export function SignupForm({
                                                     </FieldLabel>
                                                 </FormLabel>
                                                 <FormControl>
-                                                    <Input id="name" placeholder="Enter your full name" {...field} />
+                                                    <Input id="name" placeholder="Enter your full name" className="h-10 sm:h-9 text-[16px] sm:text-sm" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </Field>
@@ -121,6 +121,7 @@ export function SignupForm({
                                                         id="email"
                                                         type="email"
                                                         placeholder="Enter your email address"
+                                                        className="h-10 sm:h-9 text-[16px] sm:text-sm"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -148,6 +149,7 @@ export function SignupForm({
                                                                     id="password"
                                                                     type={showPassword ? "text" : "password"}
                                                                     placeholder="Create a password"
+                                                                    className="h-10 sm:h-9 text-[16px] sm:text-sm"
                                                                     {...field}
                                                                 />
                                                                 <Button
@@ -187,6 +189,7 @@ export function SignupForm({
                                                                     id="confirm-password"
                                                                     type={showConfirmPassword ? "text" : "password"}
                                                                     placeholder="Confirm password"
+                                                                    className="h-10 sm:h-9 text-[16px] sm:text-sm"
                                                                     {...field}
                                                                 />
                                                                 <Button

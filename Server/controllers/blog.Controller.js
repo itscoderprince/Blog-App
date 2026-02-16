@@ -1,4 +1,5 @@
 import Blog from "../models/blogModel.js";
+import Category from "../models/categoryModel.js";
 import { handleError } from "../helpers/handleError.js";
 import { uploadOnCloudinary } from "../helpers/cloudinary.js";
 import slugify from "slugify";
@@ -136,7 +137,26 @@ export const deleteBlog = async (req, res, next) => {
  */
 export const showAll = async (req, res, next) => {
     try {
-        const blogs = await Blog.find().sort({ createdAt: -1 }).populate("author", "name avatar");
+        const { category, search } = req.query;
+        let query = {};
+
+        if (category) {
+            const foundCategory = await Category.findOne({ slug: category });
+            if (foundCategory) {
+                query.category = foundCategory.name;
+            } else {
+                query.category = category;
+            }
+        }
+
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: "i" } },
+                { blogContent: { $regex: search, $options: "i" } }
+            ];
+        }
+
+        const blogs = await Blog.find(query).sort({ createdAt: -1 }).populate("author", "name avatar");
 
         res.status(200).json({
             success: true,
@@ -167,3 +187,4 @@ export const getSingleBlog = async (req, res, next) => {
         next(handleError(500, error.message));
     }
 };
+

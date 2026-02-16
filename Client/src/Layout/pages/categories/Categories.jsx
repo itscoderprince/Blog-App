@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Edit, Plus, Trash2, LayoutGrid, Trash, AlertTriangle } from "lucide-react"
 import Spinner from "@/components/Spinner"
 import { toast } from "sonner"
+import { TableSkeleton } from "@/components/TableSkeleton"
 import slugify from "slugify"
 
 import { Button } from "@/components/ui/button"
@@ -46,7 +47,6 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { categorySchema } from "@/lib/zSchema"
 import { getEnv } from "@/helpers/getEnv"
 import { useCategoryStore } from "@/store/useCategoryStore"
-import Loading from "@/components/Loading"
 
 const Categories = () => {
     // Dialog States
@@ -172,27 +172,29 @@ const Categories = () => {
     }
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500">
-            <Card className="border-none shadow-sm bg-background py-4 gap-3">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                    <div className="space-y-1">
-                        <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                            <LayoutGrid className="h-6 w-6 text-primary" />
-                            Manage Categories
+        <div className="space-y-3 sm:space-y-6 animate-in fade-in duration-500">
+            <Card className="border-none shadow-sm bg-background py-2 sm:py-4 gap-2 sm:gap-3">
+                <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 py-3 px-4 sm:px-8 border-b [.border-b]:pb-3 border-border/40 bg-muted/20">
+                    <div className="space-y-1.5">
+                        <CardTitle className="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-3 text-foreground">
+                            <div className="p-2 bg-primary/10 rounded-xl">
+                                <LayoutGrid className="h-6 w-6 text-primary" strokeWidth={2.5} />
+                            </div>
+                            Categories
                         </CardTitle>
-                        <CardDescription>
-                            Organize your blog content with custom categories.
+                        <CardDescription className="text-sm font-medium text-muted-foreground/80">
+                            Classify and organize your stories with custom tags.
                         </CardDescription>
                     </div>
-                    <CardAction className="flex gap-2">
+                    <div className="flex items-center gap-3 w-full md:w-auto">
                         {categories?.length > 0 && (
                             <Button
-                                variant="destructive"
+                                variant="outline"
                                 onClick={() => setIsDeleteAllOpen(true)}
-                                className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105 active:scale-95"
+                                className="rounded-xl border-destructive/20 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 font-bold text-xs h-10 px-4 flex-1 md:flex-none shadow-sm"
                             >
-                                <Trash className="mr-2 h-4 w-4" />
-                                Delete All
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Clear All
                             </Button>
                         )}
                         <Button
@@ -201,73 +203,77 @@ const Categories = () => {
                                 form.reset({ name: "", slug: "" })
                                 setIsFormOpen(true)
                             }}
-                            className="rounded-full shadow-sm transition-all hover:shadow-md hover:scale-105 active:scale-95"
+                            className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 transition-all duration-300 font-bold text-xs h-10 px-4 flex-1 md:flex-none"
                         >
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add New
+                            <Plus className="h-4 w-4 mr-2" strokeWidth={3} />
+                            Add Tag
                         </Button>
-                    </CardAction>
+                    </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-2 sm:px-6">
                     {loading ? (
-                        <Loading fullPage={false} />
+                        <TableSkeleton columns={3} rows={6} />
                     ) : (
-                        <div className="rounded-xl border bg-card/50 overflow-hidden">
-                            <Table>
-                                <TableHeader className="bg-muted/40">
-                                    <TableRow>
-                                        <TableHead className="font-semibold py-4">Category Name</TableHead>
-                                        <TableHead className="font-semibold py-4">Slug</TableHead>
-                                        <TableHead className="text-right font-semibold py-4">Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {categories?.length > 0 ? (
-                                        categories.map((category) => (
-                                            <TableRow key={category._id} className="hover:bg-muted/20 transition-all group">
-                                                <TableCell className="font-medium">{category.name}</TableCell>
-                                                <TableCell className="text-muted-foreground font-mono text-xs tracking-tight">{category.slug}</TableCell>
-                                                <TableCell className="text-right">
-                                                    <div className="flex justify-end gap-2 pr-2">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full transition-colors"
-                                                            onClick={() => handleEdit(category)}
-                                                        >
-                                                            <Edit className="h-4.5 w-4.5" />
-                                                            <span className="sr-only">Edit</span>
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-full transition-colors"
-                                                            onClick={() => handleDeleteClick(category)}
-                                                        >
-                                                            <Trash2 className="h-4.5 w-4.5" />
-                                                            <span className="sr-only">Delete</span>
-                                                        </Button>
+                        <div className="rounded-xl border bg-card/50 overflow-x-auto">
+                            <div className="min-w-[500px]">
+                                <Table>
+                                    <TableHeader className="bg-muted/40">
+                                        <TableRow>
+                                            <TableHead className="font-semibold py-4">Category Name</TableHead>
+                                            <TableHead className="font-semibold py-4">Slug</TableHead>
+                                            <TableHead className="text-right font-semibold py-4">Actions</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {categories?.length > 0 ? (
+                                            categories.map((category) => (
+                                                <TableRow key={category._id} className="hover:bg-muted/30 transition-all group">
+                                                    <TableCell className="font-bold text-sm text-foreground">{category.name}</TableCell>
+                                                    <TableCell>
+                                                        <span className="text-[11px] font-mono text-muted-foreground/80 bg-muted px-2 py-0.5 rounded border border-border/40 group-hover:border-primary/20 transition-colors">
+                                                            {category.slug}
+                                                        </span>
+                                                    </TableCell>
+                                                    <TableCell className="text-right">
+                                                        <div className="flex justify-end gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8 text-muted-foreground hover:text-[#4dbbd3] hover:bg-[#4dbbd3]/5 rounded-lg border border-transparent hover:border-[#4dbbd3]/20 transition-all"
+                                                                onClick={() => handleEdit(category)}
+                                                            >
+                                                                <Edit className="h-4 w-4" />
+                                                            </Button>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-lg border border-transparent hover:border-destructive/20 transition-all"
+                                                                onClick={() => handleDeleteClick(category)}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell colSpan={3} className="h-48 text-center">
+                                                    <div className="flex flex-col items-center justify-center gap-3 py-10">
+                                                        <div className="bg-muted/30 p-4 rounded-full">
+                                                            <LayoutGrid className="h-10 w-10 text-muted-foreground/40" />
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <p className="text font-medium text-muted-foreground">No categories yet</p>
+                                                            <p className="text-sm text-muted-foreground/60">Start adding categories to organize your blog.</p>
+                                                        </div>
                                                     </div>
                                                 </TableCell>
                                             </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={3} className="h-48 text-center">
-                                                <div className="flex flex-col items-center justify-center gap-3 py-10">
-                                                    <div className="bg-muted/30 p-4 rounded-full">
-                                                        <LayoutGrid className="h-10 w-10 text-muted-foreground/40" />
-                                                    </div>
-                                                    <div className="space-y-1">
-                                                        <p className="text font-medium text-muted-foreground">No categories yet</p>
-                                                        <p className="text-sm text-muted-foreground/60">Start adding categories to organize your blog.</p>
-                                                    </div>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
                     )}
                 </CardContent>
@@ -359,25 +365,31 @@ const Categories = () => {
 
             {/* Individual Delete Confirm Dialog */}
             <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-                <DialogContent className="sm:max-w-[400px]">
-                    <DialogHeader className="flex flex-col items-center text-center gap-2">
-                        <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
-                            <AlertTriangle className="h-6 w-6 text-destructive" />
+                <DialogContent className="sm:max-w-[400px] rounded-2xl p-0 overflow-hidden border-none shadow-2xl">
+                    <div className="bg-destructive/10 p-8 flex flex-col items-center justify-center gap-4 text-center border-b border-destructive/20">
+                        <div className="h-16 w-16 rounded-2xl bg-destructive/20 flex items-center justify-center -rotate-3 shadow-inner">
+                            <AlertTriangle className="h-8 w-8 text-destructive" strokeWidth={2.5} />
                         </div>
-                        <DialogTitle>Delete Category</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to delete <span className="font-bold text-foreground">"{categoryToDelete?.name}"</span>?
-                            This action cannot be undone.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="sm:justify-center gap-3 pt-4">
-                        <Button variant="outline" onClick={() => setIsDeleteOpen(false)} className="rounded-full">
-                            Cancel
-                        </Button>
-                        <Button variant="destructive" onClick={confirmDelete} disabled={submitting} className="rounded-full">
-                            {submitting ? <Spinner className="h-4 w-4" /> : "Yes, Delete"}
-                        </Button>
-                    </DialogFooter>
+                        <div className="space-y-1">
+                            <DialogTitle className="text-xl font-black text-destructive tracking-tight uppercase">Delete Category</DialogTitle>
+                            <DialogDescription className="text-sm font-bold text-destructive/70">
+                                This action is permanent and irreversible.
+                            </DialogDescription>
+                        </div>
+                    </div>
+                    <div className="p-6 space-y-4 bg-background">
+                        <p className="text-sm text-center font-medium text-muted-foreground px-4">
+                            Are you sure you want to delete <span className="font-black text-foreground underline decoration-destructive/30 underline-offset-4">"{categoryToDelete?.name}"</span>?
+                        </p>
+                        <div className="grid grid-cols-2 gap-3 pt-2">
+                            <Button variant="outline" onClick={() => setIsDeleteOpen(false)} className="rounded-xl h-11 border-border/60 font-bold transition-all hover:bg-muted shadow-sm">
+                                Keep it
+                            </Button>
+                            <Button variant="destructive" onClick={confirmDelete} disabled={submitting} className="rounded-xl h-11 font-black shadow-lg shadow-destructive/20 transition-all active:scale-95">
+                                {submitting ? <Spinner className="h-4 w-4" /> : "Yes, Delete"}
+                            </Button>
+                        </div>
+                    </div>
                 </DialogContent>
             </Dialog>
 
@@ -404,7 +416,7 @@ const Categories = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     )
 }
 

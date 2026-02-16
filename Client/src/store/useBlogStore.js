@@ -4,10 +4,18 @@ import { getEnv } from "@/helpers/getEnv"
 export const useBlogStore = create((set) => ({
     blogs: [],
     loading: false,
-    fetchBlogs: async () => {
+    fetchBlogs: async (category = null, search = null) => {
         set({ loading: true })
         try {
-            const res = await fetch(`${getEnv("VITE_API_BASE_URL")}/blog/all`, {
+            let url = `${getEnv("VITE_API_BASE_URL")}/blog/all`;
+            const params = new URLSearchParams();
+            if (category) params.append("category", category);
+            if (search) params.append("search", search);
+
+            if (params.toString()) {
+                url += `?${params.toString()}`;
+            }
+            const res = await fetch(url, {
                 credentials: "include",
             })
             const data = await res.json()

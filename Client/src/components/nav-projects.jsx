@@ -23,16 +23,22 @@ export function NavProjects({
   projects,
   categories
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <SidebarGroup>
-      <SidebarMenu>
+      <SidebarMenu className="gap-1">
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild tooltip={item.name}>
-              <Link to={item.url}>
-                <item.icon />
+            <SidebarMenuButton asChild tooltip={item.name} className="h-10 text-[15px]">
+              <Link to={item.url} onClick={handleLinkClick}>
+                <item.icon className="!size-5" />
                 <span>{item.name}</span>
               </Link>
             </SidebarMenuButton>
@@ -40,15 +46,15 @@ export function NavProjects({
         ))}
       </SidebarMenu>
 
-      <SidebarGroupLabel className="mt-4 group-data-[collapsible=icon]:hidden">Categories</SidebarGroupLabel>
-      <SidebarMenu className="pl-1 group-data-[collapsible=icon]:hidden">
+      <SidebarGroupLabel className="mt-4 text-xs font-semibold uppercase tracking-wider group-data-[collapsible=icon]:hidden">Categories</SidebarGroupLabel>
+      <SidebarMenu className="pl-1.5 gap-1 group-data-[collapsible=icon]:hidden">
         {categories?.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild tooltip={item.name}>
-              <a href={item.url} className="flex items-center gap-2">
-                <CircleSmall />
+            <SidebarMenuButton asChild tooltip={item.name} className="h-9 text-[14px]">
+              <Link to={item.url} className="flex items-center gap-2" onClick={handleLinkClick}>
+                <CircleSmall className="!size-4" />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

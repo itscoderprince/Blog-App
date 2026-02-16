@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Calendar, User, ArrowLeft, MessageCircle, Heart, Facebook, Twitter, Linkedin, Bookmark } from "lucide-react"
 import Loading from "@/components/Loading"
+import { BlogDetailSkeleton } from "@/components/BlogDetailSkeleton"
 import { Card } from "@/components/ui/card"
 import { RouteBlogDetails } from "@/helpers/Route"
 import CommentSection from "@/components/CommentSection"
@@ -23,7 +24,7 @@ const SideBlogCard = ({ blog }) => {
     })
 
     return (
-        <Link to={RouteBlogDetails(_id)} className="group flex flex-col gap-3 hover:bg-muted/50 p-3 rounded-2xl transition-all border border-transparent hover:border-border/40">
+        <Link to={RouteBlogDetails(_id)} className="group flex flex-col gap-3 hover:bg-muted/50 rounded-2xl transition-all border border-transparent hover:border-border/40">
             <div className="aspect-[16/9] w-full overflow-hidden rounded-xl">
                 <img src={featuredImage} alt={title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             </div>
@@ -81,7 +82,7 @@ const BlogDetail = () => {
         window.scrollTo(0, 0)
     }, [id])
 
-    if (loading) return <Loading fullPage={false} />
+    if (loading) return <BlogDetailSkeleton />
 
     if (!blog) {
         return (
@@ -145,7 +146,7 @@ const BlogDetail = () => {
     return (
         <div className="min-h-screen bg-background animate-in fade-in duration-700">
             {/* Header Section */}
-            <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-2 sm:px-4 max-w-7xl">
                 <Button
                     onClick={() => navigate("/")}
                     variant="ghost"
@@ -157,27 +158,27 @@ const BlogDetail = () => {
                 </Button>
             </div>
 
-            <main className="container mx-auto px-4 max-w-7xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <main className="container mx-auto px-2 sm:px-4 max-w-7xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
 
                     {/* Left Side: 75% Content (9/12 cols) */}
                     <div className="lg:col-span-9">
-                        <div className="flex flex-col gap-6 mb-8">
+                        <div className="flex flex-col gap-4 sm:gap-6 mb-6 sm:mb-8">
                             <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-[1.2]">
                                 {title}
                             </h1>
                         </div>
 
                         {/* Article Image */}
-                        <div className="relative rounded-2xl overflow-hidden mb-8">
+                        <div className="relative rounded-sm sm:rounded-2xl overflow-hidden mb-6 sm:mb-8">
                             <img src={featuredImage} alt={title} className="w-full h-auto object-cover" />
-                            <Badge className="absolute top-4 right-4 bg-[#4dbbd3] hover:bg-[#3daabc] text-white border-none px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase z-10">
+                            <Badge className="absolute top-2.5 right-2.5 bg-[#4dbbd3] hover:bg-[#3daabc] text-white border-none px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase z-10">
                                 {category}
                             </Badge>
                         </div>
 
                         {/* Author & Share Section - Now below image */}
-                        <div className="flex flex-col gap-6 py-2 border-y border-border/40 mb-8">
+                        <div className="flex flex-col gap-6 py-3 border-y border-border/40 mb-6 sm:mb-8">
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex items-center gap-3">
                                     <Avatar className="h-11 w-11 ring-2 ring-primary/5">
@@ -216,7 +217,7 @@ const BlogDetail = () => {
                         </div>
 
                         {/* Article Content */}
-                        <article className="max-w-none mb-16">
+                        <article className="max-w-none mb-8 sm:mb-16">
                             <div
                                 className="prose prose-md md:prose-lg dark:prose-invert prose-slate 
                                 prose-headings:font-bold prose-headings:tracking-tight 
@@ -229,7 +230,7 @@ const BlogDetail = () => {
                         </article>
 
                         {/* Interactive Section */}
-                        <div className="flex flex-wrap items-center justify-between gap-4 py-2 border-t border-border/40 mt-8 mb-6">
+                        <div className="flex flex-wrap items-center justify-between gap-4 py-2 border-t border-border/40 mt-6 sm:mt-8 mb-4 sm:mb-6">
                             <div className="flex items-center gap-6">
                                 <button
                                     onClick={handleLike}
